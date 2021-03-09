@@ -9,13 +9,13 @@ class Computer
     @code = @code.map { |n| n = rand(1..6) }
   end
 
-  def feedback(user_guess)
+  def feedback(player_guess)
     i = 0
     s = []
-    while i <= user_guess.length - 1
-      if self.code[i] == user_guess[i]
+    while i <= player_guess.length - 1
+      if code[i] == player_guess[i]
         s << 'X'
-      elsif self.code.include?(user_guess[i])
+      elsif code.include?(player_guess[i])
         s << 'O'
       end
       i += 1
@@ -24,7 +24,20 @@ class Computer
   end
 end
 
-comp = Computer.new
-comp.create_code
-p comp.code
-p comp.feedback([1, 2, 3, 4])
+class Player
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def guess
+    gets.chomp.split('').map { |n| n.to_i }
+  end
+end
+
+class Game
+  def initialize
+    @player = Player.new
+  end
+end
