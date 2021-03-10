@@ -20,7 +20,15 @@ class Computer
       end
       i += 1
     end
-    s.join('')
+    s.shuffle.join('')
+  end
+
+  def starter_guess
+    '1111'
+  end
+
+  def comp_breaker
+    
   end
 end
 
@@ -92,7 +100,7 @@ class Game
     game_over = false
     while game_over == false
       while @turns <= 12
-        if win?(round) == true
+        if win?(breaker_round) == true
           player.win
           break
         end
@@ -105,7 +113,7 @@ class Game
     end
   end
 
-  def round
+  def breaker_round
     puts "Turn ##{@turns}. Make a guess:"
     feedback = @comp.feedback(player.guess)
     puts feedback
