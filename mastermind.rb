@@ -38,6 +38,19 @@ class Player
     end
   end
 
+  def choose_path?
+    puts 'Would you like to be the CODEBREAKER or CODEMAKER?'
+    path = gets.chomp
+    until path == '1' || path == '2'
+      puts "Please input '1' or '2'"
+      path = gets.chomp
+    end
+    case path
+    when '1' then true
+    when '2' then false
+    end
+  end
+
   def loss
     puts 'You lose :('
   end
@@ -57,21 +70,25 @@ class Game
     @turns = 1
   end
 
-  def play
-    start_game
-    game_loop
+  def code_breaker
+    puts 'An "O" means right number, right position!'
+    puts 'An "X" means right number, wrong position!'
+    puts "\n"
+    breaker_loop
     puts 'Thanks for playing!'
+  end
+
+  def code_maker
+    puts 'You chose CODEMAKER!'
   end
 
   def start_game
     puts 'Welcome to Mastermind!'
     puts "\n"
-    puts 'An "O" means right number, right position!'
-    puts 'An "X" means right number, wrong position!'
-    puts "\n"
+    player.choose_path? ? code_breaker : code_maker
   end
 
-  def game_loop
+  def breaker_loop
     game_over = false
     while game_over == false
       while @turns <= 12
