@@ -37,6 +37,14 @@ class Player
       end
     end
   end
+
+  def loss
+    puts 'You lose :('
+  end
+
+  def win
+    puts 'You cracked the code!'
+  end
 end
 
 class Game
@@ -44,10 +52,26 @@ class Game
 
   def initialize
     @player = Player.new
-    @code = Computer.new.create_code
+    @comp = Computer.new
+    @code = @comp.create_code
+    @turns = 1
   end
 
-  def game_loop
-    
+  def start_game
+    puts 'Welcome to Mastermind!'
+    round
+  end
+
+  def play_loop
+    round until @turns > 12 || round == 'OOOO'
+    # player.win if round == 'OOOO'
+  end
+
+  def round
+    puts "Turn ##{@turns}. Make a guess:"
+    guess = @comp.feedback(player.guess)
+    puts guess
+    @turns += 1
+    guess
   end
 end
