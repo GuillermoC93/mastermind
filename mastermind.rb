@@ -12,11 +12,11 @@ class Computer
   def feedback(player_guess)
     i = 0
     s = []
-    while i <= player_guess.length - 1
+    while i <= code.length - 1
       if code[i] == player_guess[i]
-        s << 'X'
-      elsif code.include?(player_guess[i])
         s << 'O'
+      elsif code.include?(player_guess[i])
+        s << 'X'
       end
       i += 1
     end
@@ -25,19 +25,29 @@ class Computer
 end
 
 class Player
-  attr_reader :name
-
-  def initialize(name)
-    @name = name
-  end
-
   def guess
-    gets.chomp.split('').map { |n| n.to_i }
+    loop do
+      guess = gets.chomp
+      if guess =~ /^-?[1-6]+$/ && guess.length == 4
+        return guess.split('').map(&:to_i)
+      elsif guess.length < 4 || guess.length > 4
+        puts 'Error! Invalid input.'
+      else
+        puts 'Error! Invalid input.'
+      end
+    end
   end
 end
 
 class Game
+  attr_reader :player, :code
+
   def initialize
     @player = Player.new
+    @code = Computer.new.create_code
+  end
+
+  def game_loop
+    
   end
 end
