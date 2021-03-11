@@ -13,9 +13,7 @@ class Computer
     s = []
     i = 0
     while i < code.length - 1
-      if code[i] == player_guess[i]
-        s << "O"
-      end
+      s << 'O' if code[i] == player_guess[i]
       i += 1
     end
     s.join('')
@@ -28,21 +26,6 @@ class Computer
   def starter_guess
     '1111'
   end
-
-#   def comp_breaker
-#     feedback = feedback(starter_guess.to_i)
-#     until feedback.length == 4
-#       if feedback.length.zero?
-#         feedback = feedback(starter_guess.to_i + 1111)
-#       elsif feedback.length == 1
-#         feedback = feedback(starter_guess.to_i + 111)
-#       elsif feedback.length == 2
-#         feedback = feedback(starter_guess.to_i + 11)
-#       elsif feedback.length == 3
-#         feedback = feedback(starter_guess.to_i + 1)
-#       end
-#     end
-#   end
 end
 
 class Player
