@@ -9,29 +9,24 @@ class Computer
     @code = @code.map { |n| n = rand(1..6) }
   end
 
-  def feedback(player_guess)
-    i = 0
+  def good_feedback(player_guess)
     s = []
-    salt = code
-    while i <= code.length - 1
-      if code[i] == player_guess[i]
-        s << 'O'
-        salt.delete(code.fetch(i))
-      end
-      i += 1
-    end
     i = 0
-    while i <= code.length - 1
-      if salt.include?(player_guess[i])
-        s << "X"
+    while i < code.length - 1
+      if code[i] == player_guess[i]
+        s << "O"
       end
       i += 1
     end
     s.join('')
   end
 
+  def feedback(player_guess)
+    good_feedback(player_guess)
+  end
+
   def starter_guess
-    "1111"
+    '1111'
   end
 
 #   def comp_breaker
@@ -65,7 +60,6 @@ class Player
   end
 
   def choose_path?
-    puts 'Would you like to be the CODEBREAKER or CODEMAKER?'
     puts 'Type "1" for CODEBREAKER or "2" for CODEMAKER.'
     path = gets.chomp
     until path == '1' || path == '2'
@@ -112,6 +106,7 @@ class Game
   def start_game
     puts 'Welcome to Mastermind!'
     puts "\n"
+    puts 'Would you like to be the CODEBREAKER or CODEMAKER?'
     player.choose_path? ? code_breaker : code_maker
   end
 
