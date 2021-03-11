@@ -12,24 +12,42 @@ class Computer
   def feedback(player_guess)
     i = 0
     s = []
+    salt = code
     while i <= code.length - 1
       if code[i] == player_guess[i]
         s << 'O'
-      elsif code.include?(player_guess[i])
-        s << 'X'
+        salt.delete(code.fetch(i))
       end
       i += 1
     end
-    s.shuffle.join('')
+    i = 0
+    while i <= code.length - 1
+      if salt.include?(player_guess[i])
+        s << "X"
+      end
+      i += 1
+    end
+    s.join('')
   end
 
   def starter_guess
-    '1111'
+    "1111"
   end
 
-  def comp_breaker
-    
-  end
+#   def comp_breaker
+#     feedback = feedback(starter_guess.to_i)
+#     until feedback.length == 4
+#       if feedback.length.zero?
+#         feedback = feedback(starter_guess.to_i + 1111)
+#       elsif feedback.length == 1
+#         feedback = feedback(starter_guess.to_i + 111)
+#       elsif feedback.length == 2
+#         feedback = feedback(starter_guess.to_i + 11)
+#       elsif feedback.length == 3
+#         feedback = feedback(starter_guess.to_i + 1)
+#       end
+#     end
+#   end
 end
 
 class Player
@@ -48,6 +66,7 @@ class Player
 
   def choose_path?
     puts 'Would you like to be the CODEBREAKER or CODEMAKER?'
+    puts 'Type "1" for CODEBREAKER or "2" for CODEMAKER.'
     path = gets.chomp
     until path == '1' || path == '2'
       puts "Please input '1' or '2'"
