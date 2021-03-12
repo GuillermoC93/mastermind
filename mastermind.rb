@@ -22,14 +22,29 @@ class Computer
     end
     i = 0
     while i < game_code.length
-      s << "X" if player_guess.include?(game_code[i])
+      s << 'X' if player_guess.include?(game_code[i])
       i += 1
     end
     s.join('')
   end
 
   def starter_guess
-    '1111'
+    [1, 1, 1, 1]
+  end
+
+  def comp_round_guess(comp_guess, feedback_string)
+    case feedback_string.length
+    when 0
+      (comp_guess.to_i + 1111).to_s
+    when 1
+      (comp_guess.to_i + 111).to_s
+    when 2
+      (comp_guess.to_i + 11).to_s
+    when 3
+      (comp_guess.to_i + 1).to_s
+    when 4
+      # code a shuffle method
+    end
   end
 end
 
@@ -89,6 +104,7 @@ class Game
 
   def code_maker
     puts 'You chose CODEMAKER!'
+    maker_starter
   end
 
   def start_game
@@ -124,6 +140,17 @@ class Game
     feedback
   end
 
+  def maker_starter
+    puts "Turn ##{@turns}. Make a guess:"
+    puts @comp.starter_guess.join('').to_s
+    game_code = code.dup
+    feedback = @comp.feedback(@comp.starter_guess, game_code)
+    puts feedback
+    @turns += 1
+    feedback
+  end
+
+  
   def win?(feedback)
     feedback == 'OOOO'
   end
