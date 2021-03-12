@@ -14,15 +14,13 @@ class Computer
     i = 0
     while i < game_code.length
       if game_code[i] == player_guess[i]
-        s << 'O'
+        s << "O"
         game_code[i] = 0
         player_guess[i] = 'X'
+      elsif player_guess.include?(game_code[i])
+        s << "X"
+        player_guess[player_guess.find_index(game_code[i])] = "X"
       end
-      i += 1
-    end
-    i = 0
-    while i < game_code.length
-      s << 'X' if player_guess.include?(game_code[i])
       i += 1
     end
     s.join('')
@@ -98,7 +96,7 @@ class Player
 end
 
 class Game
-  attr_reader :player, :code
+  attr_reader :player, :code, :player_code
 
   def initialize
     @player = Player.new
