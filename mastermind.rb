@@ -17,7 +17,12 @@ class Computer
         s << "O"
         game_code[i] = 0
         player_guess[i] = 'X'
-      elsif player_guess.include?(game_code[i])
+      end
+      i += 1
+    end
+    i = 0
+    while i < game_code.length
+      if player_guess.include?(game_code[i])
         s << "X"
         player_guess[player_guess.find_index(game_code[i])] = "X"
       end
