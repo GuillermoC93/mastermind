@@ -9,18 +9,23 @@ class Computer
     @code = @code.map { |n| n = rand(1..6) }
   end
 
-  def good_feedback(player_guess)
+  def feedback(player_guess, game_code)
     s = []
     i = 0
-    while i < code.length - 1
-      s << 'O' if code[i] == player_guess[i]
+    while i < game_code.length
+      if game_code[i] == player_guess[i]
+        s << 'O'
+        game_code[i] = 0
+        player_guess[i] = 'X'
+      end
+      i += 1
+    end
+    i = 0
+    while i < game_code.length
+      s << "X" if player_guess.include?(game_code[i])
       i += 1
     end
     s.join('')
-  end
-
-  def feedback(player_guess)
-    good_feedback(player_guess)
   end
 
   def starter_guess
@@ -112,7 +117,8 @@ class Game
 
   def breaker_round
     puts "Turn ##{@turns}. Make a guess:"
-    feedback = @comp.feedback(player.guess)
+    game_code = code.dup
+    feedback = @comp.feedback(player.guess, game_code)
     puts feedback
     @turns += 1
     feedback
