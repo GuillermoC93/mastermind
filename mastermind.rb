@@ -24,7 +24,7 @@ class Computer
     while i < game_code.length
       if player_guess.include?(game_code[i])
         s << 'X'
-        player_guess[player_guess.find_index(game_code[i])] = "X"
+        player_guess[player_guess.find_index(game_code[i])] = 'X'
       end
       i += 1
     end
@@ -34,6 +34,7 @@ class Computer
   def starter_guess
     [1, 1, 1, 1]
   end
+
 
   def comp_round_guess(comp_guess, feedback_string)
     case feedback_string.length
@@ -46,7 +47,7 @@ class Computer
     when 3
       (comp_guess.join('').to_i + 1).to_s
     when 4
-      # code a shuffle method
+      (comp_guess.shuffle!.join('')).to_s
     end
   end
 end
@@ -102,6 +103,7 @@ end
 
 class Game
   attr_reader :player, :code, :player_code
+  attr_accessor :next_guess
 
   def initialize
     @player = Player.new
@@ -122,11 +124,14 @@ class Game
     puts "You chose CODEMAKER!\n\n"
     puts 'Please input a 4 digit number with each number being between 1-6'
     @player_code = player.set_maker_code
-    player_code = @player_code.dup
+    game_code = @player_code.dup
     puts "Turn ##{@turns}. Make a guess:"
-    feedback = @comp.feedback(@comp.starter_guess, player_code)
+    puts @comp.starter_guess.join('').to_s
+    feedback = @comp.feedback(@comp.starter_guess, game_code)
     puts feedback
-    feedback
+    @next_guess = @comp.comp_round_guess(@comp.starter_guess, feedback)
+    @turns += 1
+    maker_loop
   end
 
   def start_game
@@ -136,10 +141,18 @@ class Game
     player.choose_path? ? code_breaker : code_maker
   end
 
-  def max_rounds
+  def max_rounds_breaker
     if @turns >= 12 && win?(breaker_round) == true
       player.win
-    else
+    elsif @turns >= 12 && win?(breaker_round) == false
+      player.loss
+    end
+  end
+
+  def max_rounds_maker
+    if @turns >= 12 && win?(maker_round) == true
+      player.win
+    elsif @turns >= 12 && win?(maker_round) == false
       player.loss
     end
   end
@@ -153,7 +166,21 @@ class Game
           break
         end
       end
-      max_rounds
+      max_rounds_breaker
+      game_over = true
+    end
+  end
+
+  def maker_loop
+    game_over = false
+    while game_over == false
+      while @turns <= 11
+        if win?(maker_round) == true
+          player.win
+          break
+        end
+      end
+      max_rounds_maker
       game_over = true
     end
   end
@@ -162,6 +189,17 @@ class Game
     puts "Turn ##{@turns}. Make a guess:"
     game_code = code.dup
     feedback = @comp.feedback(player.guess, game_code)
+    puts feedback
+    @turns += 1
+    feedback
+  end
+
+  def maker_round
+    puts "Turn ##{@turns}. Make a guess:"
+    puts @next_guess
+    game_code = @player_code.dup
+    feedback = @comp.feedback(@next_guess.split('').map(&:to_i), game_code)
+    @next_guess = @comp.comp_round_guess(@next_guess.split('').map(&:to_i), feedback)
     puts feedback
     @turns += 1
     feedback
