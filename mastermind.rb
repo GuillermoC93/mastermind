@@ -35,7 +35,6 @@ class Computer
     [1, 1, 1, 1]
   end
 
-
   def comp_round_guess(comp_guess, feedback_string)
     case feedback_string.length
     when 0
@@ -47,7 +46,7 @@ class Computer
     when 3
       (comp_guess.join('').to_i + 1).to_s
     when 4
-      (comp_guess.shuffle!.join('')).to_s
+      comp_guess.shuffle!.join('').to_s
     end
   end
 
