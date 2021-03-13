@@ -50,6 +50,15 @@ class Computer
       (comp_guess.shuffle!.join('')).to_s
     end
   end
+
+  def comp_loss
+    puts "The computer couldn't guess the code!"
+    puts 'You win!'
+  end
+
+  def comp_win
+    puts 'The computer cracked your code!'
+  end
 end
 
 class Player
@@ -142,18 +151,22 @@ class Game
   end
 
   def max_rounds_breaker
-    if @turns >= 12 && win?(breaker_round) == true
-      player.win
-    elsif @turns >= 12 && win?(breaker_round) == false
-      player.loss
+    while @turns == 12
+      if win?(breaker_round) == true
+        player.win
+      else
+        player.loss
+      end
     end
   end
 
   def max_rounds_maker
-    if @turns >= 12 && win?(maker_round) == true
-      player.win
-    elsif @turns >= 12 && win?(maker_round) == false
-      player.loss
+    while @turns == 12
+      if win?(maker_round) == true
+        @comp.comp_win
+      else
+        @comp.comp_loss
+      end
     end
   end
 
@@ -176,7 +189,7 @@ class Game
     while game_over == false
       while @turns <= 11
         if win?(maker_round) == true
-          player.win
+          @comp.comp_win
           break
         end
       end
