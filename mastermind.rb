@@ -14,7 +14,7 @@ class Computer
     i = 0
     while i < game_code.length
       if game_code[i] == player_guess[i]
-        s << "O"
+        s << 'O'
         game_code[i] = 0
         player_guess[i] = 'X'
       end
@@ -23,7 +23,7 @@ class Computer
     i = 0
     while i < game_code.length
       if player_guess.include?(game_code[i])
-        s << "X"
+        s << 'X'
         player_guess[player_guess.find_index(game_code[i])] = "X"
       end
       i += 1
@@ -119,31 +119,41 @@ class Game
   end
 
   def code_maker
-    puts 'You chose CODEMAKER!'
+    puts "You chose CODEMAKER!\n\n"
     puts 'Please input a 4 digit number with each number being between 1-6'
     @player_code = player.set_maker_code
+    player_code = @player_code.dup
+    puts "Turn ##{@turns}. Make a guess:"
+    feedback = @comp.feedback(@comp.starter_guess, player_code)
+    puts feedback
+    feedback
   end
 
   def start_game
     puts 'Welcome to Mastermind!'
     puts "\n"
-    puts 'Would you like to be the CODEBREAKER or CODEMAKER?'
+    puts "Would you like to be the CODEBREAKER or CODEMAKER?\n\n"
     player.choose_path? ? code_breaker : code_maker
+  end
+
+  def max_rounds
+    if @turns >= 12 && win?(breaker_round) == true
+      player.win
+    else
+      player.loss
+    end
   end
 
   def breaker_loop
     game_over = false
     while game_over == false
-      while @turns <= 12
+      while @turns <= 11
         if win?(breaker_round) == true
           player.win
           break
         end
       end
-      if @turns > 12
-        player.loss
-        break
-      end
+      max_rounds
       game_over = true
     end
   end
